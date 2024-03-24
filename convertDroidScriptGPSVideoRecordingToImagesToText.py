@@ -35,11 +35,15 @@ def FrameCapture(path):
 # Driver Code 
 if __name__ == '__main__': 
 	from crop import crop #the python file 
+	import time
+	from imageToText import *
 	# Calling the function 
 	#FrameCapture("Z:\\0_NewOBSOutput\\demo.mp4") #"C:\\Users\\Admin\\PycharmProjects\\project_1\\openCV.mp4") 
 	directory = "C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\GetGPSFromDroidScript"
 	videoName = "demo.mp4"
 	counter = FrameCapture(directory + "\\" + videoName)
 	for i in range(counter): 
-		crop(directory, "frame" + str(i) + ".jpg")
-		#print(i)
+		imageName = "frame" + str(i) + ".jpg"
+		crop(directory, imageName)
+		imageToText("C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\GetGPSFromDroidScript", imageName)
+		time.sleep(0.1) #print(i)
