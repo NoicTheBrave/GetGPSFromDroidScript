@@ -6,7 +6,7 @@ from pytesseract import pytesseract
 # Defining paths to tesseract.exe 
 # and the image we would be using 
 path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-image_path = "C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\demoImage.jpg"#r"csv\sample_text.png"
+image_path = "C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\GetGPSFromDroidScript\\demoImage.jpg"#r"csv\sample_text.png"
 
 # Opening the image & storing it in an image object 
 img = Image.open(image_path) 

@@ -28,6 +28,6 @@ def crop(filePath, fileName):
 
     im1.save(fileName)
 
-directory = "C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS"
+directory = "C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\GetGPSFromDroidScript"
 fileName = "demoImage.jpg"
 crop(directory, fileName)
