@@ -28,6 +28,7 @@ def FrameCapture(path, fileName):
 			
 			# Saves the frames with frame-count 
 			savedFileName = path + "\\images\\" + "frame" + str(count) + ".jpg"
+<<<<<<< HEAD
 			
 			if skip == skipLimit: #every (~55/skip) FPS, a frame is saved (idk how to word it, but its less frames :) )
 				cv2.imwrite(str(savedFileName), image) 
@@ -35,6 +36,13 @@ def FrameCapture(path, fileName):
 				count += 1
 				print(savedFileName)
 			skip +=1
+=======
+			print(savedFileName)
+			
+			cv2.imwrite(str(savedFileName), image) 
+	
+			count += 1
+>>>>>>> c08be3db4bc5037b6e621ee48d9ab8b6936eaa74
 	except: 
 		print("End of images")
 	print(count)
@@ -55,9 +63,14 @@ if __name__ == '__main__':
 	for i in range(counter): 
 		print("----------- " + str(i) + " -----------")
 		imageName = "frame" + str(i) + ".jpg"
+<<<<<<< HEAD
 		crop(directory+ "\\images", imageName) #Crops the image file 
 		text = imageToText(directory + "\\images", imageName) #Extracts text from the image file
 		os.remove(directory + "\\images\\" + imageName) #deletes the image file once it has read the text
 		print("------------------------------")
 
+=======
+		crop(directory+ "\\images\\", imageName)
+		imageToText(directory + "\\images\\", imageName)
+>>>>>>> c08be3db4bc5037b6e621ee48d9ab8b6936eaa74
 		time.sleep(0.1) #print(i)
