@@ -4,6 +4,8 @@
 import cv2 
 import re 
 
+DEVELOPMENT = 1 #0 = RUN AS NORMAL ||| 1 = DISABLES GENERATING NEW IMAGES, CROPPING THEM, AND ANY OTHER FEATURES DOWN THE ROAD AS NEED BE (mainly cause I dont need this done avery time to test 1 feature sooooo)
+
 # Function to extract frames 
 def FrameCapture(path, fileName): 
 
@@ -52,22 +54,37 @@ if __name__ == '__main__':
 	#FrameCapture("Z:\\0_NewOBSOutput\\demo.mp4") #"C:\\Users\\Admin\\PycharmProjects\\project_1\\openCV.mp4") 
 	directory = "C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\GetGPSFromDroidScript"
 	videoName = "demo.mp4"
-	counter = FrameCapture(directory,videoName)
+ 
+	#----------RE-ENABLE AFTER DEVELOPMENT IS COMPLETE------------
+	#counter = FrameCapture(directory,videoName)
+
+
 
 	buffer = ""
 	infoBuffer=[0]*6 #place holders, will be a buffer for when I save to a CSV file 
 	auth = ["L", "S", "B", "A"] #first letter of important info to rip
 	auth2 = ["a","n", "p", "e", "l", "c"] #second letter of important info to rip 
-  
+
+	Lat = [] #latitude
+	Long = [] #Longitude 
+	Spd = [] #Speed (idk what units this is in, but it seams to work when you are in a car...)
+	Bear = [] #bearing
+	Alt = [] #Altitude
+	Accu = [] #Accuracy...? I believe (not sure what this is w/ refference to but okay)
+
+
 	for i in range(counter): 
 		print("----------- " + str(i) + " -----------")
 		imageName = "frame" + str(i) + ".jpg"
 		crop(directory+ "\\images", imageName) #Crops the image file 
 		text = imageToText(directory + "\\images", imageName) #Extracts text from the image file
-		os.remove(directory + "\\images\\" + imageName) #deletes the image file once it has read the text
+		
+		#--------RE-ENABLE AFTER DEVELOPMENT IS COMPLETE: DELETE'S IMAGES AFTER DONE WITH PROCESS-----
+		#os.remove(directory + "\\images\\" + imageName) #deletes the image file once it has read the text
+
 		print("------------------------------")
 		print(text)
-		time.sleep(1) #print(i)
+		#time.sleep(1) #print(i)
   
 		#attempting to make the CSV buffer shit here (MOVE TO SEPORATE FILE LATER )
 		text = text.split('|')
@@ -75,7 +92,22 @@ if __name__ == '__main__':
 		#text = text.split('\\n')
 		tempCounter = 0
 		for i in text: 
-			temp = text[tempCounter].split(',')
+			temp = text[tempCounter].split(',') #Apparently sometimes PERIODS can be mistaken as commas... sooo
+			
+			#SOMETIMES the pgm mistakes "." -> "," Following Code-section corrects that
+			if len(temp) > 6: #should always be 6, unless it mistakens a period as a comma! then there's at min. 7 items in there 0_0
+				#If this happens, this means that ONE of these things CAN be directly converted from str -> int, so if it can, then combine current string cell with the cell to its left, then pop/remove the "full intiger" cell I just checked (i basically identify the fault, and re-append them as they should be) 
+				for i in range(len(temp)):
+					try: 
+						fixCommaErr = int(temp[i])
+						#next line of code should run if it works... allowing me to append previous thing with current, fixing the issue (and deleting the mistake from the array)
+						temp[i-1] = temp[i-1] + "." + temp[i]
+						print("ATTEMPT TO FIX ERROR: " + str(temp[i-1]))
+						time.sleep(5)
+					except:
+						print("Valid Cell, skipping...")
+
+					
 			print(temp)
 			for j in temp:
 				holder.append(j)
@@ -92,12 +124,22 @@ if __name__ == '__main__':
 		print(holder)
 		#print(temp)
 		tempCounter = 0
+  
+  
+		Lat.append(holder[0])
+		Long.append(holder[1])
+		Spd.append(holder[2])
+		Bear.append(holder[3])
+		Alt.append(holder[4])
+		Accu.append(holder[5])
 		#for i in text:
 		#	if (i or buffer) in auth :
 		#		if i in auth: #on the next pass, this will help 
 		#			buffer = i
 		#		else: #means that BUFFER is the one that is in auth, meanings its time to check the 2nd char 
-#
+	#Allocating the data to their respective arrays
+print("LAT: " + str(Lat))
+
 #					if i == auth2[0]: #a -> La -> Latitude
 #						infoBuffer[0] = text[tempCounter + 3:{NUMBER HERE FOR THE LOCATION OF THE FIRST BAR}]
 #			tempCounter += 1
