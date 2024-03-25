@@ -26,7 +26,7 @@ def crop(filePath, fileName):
     # Shows the image in image viewer
     #im1.show()
 
-    im1.save(fileName)
+    im1.save(filePath + "\\" + fileName)
 
 #directory = "C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\GetGPSFromDroidScript"
 #fileName = "demoImage.jpg"

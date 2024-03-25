@@ -21,5 +21,6 @@ def imageToText(image_path, fileName ):
 
     # Displaying the extracted text 
     print(text[:-1])
+    return  text[:-1]
 
 #imageToText("C:\\Users\\nicpi\\OneDrive\\Documents\\Python_VideoToText_DroidScriptVideo_GPS\\GetGPSFromDroidScript", "demoImage.jpg")
