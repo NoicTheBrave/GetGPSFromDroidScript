@@ -4,7 +4,7 @@
 import cv2 
 import re 
 
-DEVELOPMENT = 0 #0 = RUN AS NORMAL ||| 1 = DISABLES GENERATING NEW IMAGES, CROPPING THEM, AND ANY OTHER FEATURES DOWN THE ROAD AS NEED BE (mainly cause I dont need this done avery time to test 1 feature sooooo)
+DEVELOPMENT = 1 #0 = RUN AS NORMAL ||| 1 = DISABLES GENERATING NEW IMAGES, CROPPING THEM, AND ANY OTHER FEATURES DOWN THE ROAD AS NEED BE (mainly cause I dont need this done avery time to test 1 feature sooooo)
 
 # Function to extract frames 
 def FrameCapture(path, fileName): 
@@ -36,7 +36,8 @@ def FrameCapture(path, fileName):
 				cv2.imwrite(str(savedFileName), image) 
 				skip = 0
 				count += 1
-				print(savedFileName)
+				#print(savedFileName)
+				print(count)
 			skip +=1
 	except: 
 		print("End of images")
