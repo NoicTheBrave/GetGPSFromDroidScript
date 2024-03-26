@@ -138,7 +138,7 @@ if __name__ == '__main__':
 					if len(str(holder[j])) <3: #just chose 3 cause I could, if there's less than 3 characters in there, POP the item in the array 
 						holder.pop(j)
 
-			#another edge case - All Letters, No numbers (happened 1/355 times)
+			#Edge Case - All Letters, No numbers (happened 1/355 times)
 				print("HolderV2: " + str(holder))
     
 				countForEdgeCase0 = len(holder) #Length of the array (before entering the while loop)
@@ -147,8 +147,9 @@ if __name__ == '__main__':
 				while tempCounter != countForEdgeCase0:
 					print("CHECK_FOR_ALL_CHARS: " + str(holder[tempCounter]))
 					if not checkForNumbers(holder[tempCounter]): #from custom program I made in this folder 
-						holder.pop(tempCounter)
-						print("ITEM POPED!")
+						#holder.pop(tempCounter)
+						holder[tempCounter] = 0
+						print("ITEM MODIFIED!")
 						countForEdgeCase0 -=1 #Since I POPED an item, I NOW need to decriment the total length of the array recorded 
 
 					
@@ -157,26 +158,27 @@ if __name__ == '__main__':
 						#holder.pop(j)
 		
   
-		#Edge case - No Text on screen to detect 
-		#UPCOMING
-  
-		tempCounter = 0 #RESET BEFORE USE
-		for i in holder: #make it ONLY numbers now 
-			print(i)
-			output = re.findall(r"[-+]?\d*\.\d+|\d+", i)
-			holder[tempCounter] = float(output[0])
-			tempCounter += 1
-		print(holder)
-		#print(temp)
-		tempCounter = 0
-  
-  
-		Lat.append(holder[0])
-		Long.append(holder[1])
-		Spd.append(holder[2])
-		Bear.append(holder[3])
-		Alt.append(holder[4])
-		Accu.append(holder[5])
+		#Edge case - No Text on screen to detect (if the length is too long or too short, this just fixes the issue)
+		if (len(holder) != 6):# or (len(holder) >= 1): #if holder is pretty much empty 
+			print("TRIGGERED!!! - This should print when there is only 1 thing in the array (no text on screen)")
+		else: #-----------THIS IS THE CORE CHUNK OF THE PROGRAM THAT MAKES THE MAGIC HAPPEN 
+			tempCounter = 0 #RESET BEFORE USE
+			for i in holder: #make it ONLY numbers now (removes all non-numbers [keeps period])
+				print(i)
+				output = re.findall(r"[-+]?\d*\.\d+|\d+", i)
+				holder[tempCounter] = float(output[0])
+				tempCounter += 1
+			print(holder)
+			#print(temp)
+			tempCounter = 0
+	
+	
+			Lat.append(holder[0])
+			Long.append(holder[1])
+			Spd.append(holder[2])
+			Bear.append(holder[3])
+			Alt.append(holder[4])
+			Accu.append(holder[5])
 
 print("LAT: " + str(Lat))
 
