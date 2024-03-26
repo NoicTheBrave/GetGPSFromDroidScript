@@ -3,8 +3,9 @@
 # and Extract Frames 
 import cv2 
 import re 
+from checkForNumbers import *
 
-DEVELOPMENT = 1 #0 = RUN AS NORMAL ||| 1 = DISABLES GENERATING NEW IMAGES, CROPPING THEM, AND ANY OTHER FEATURES DOWN THE ROAD AS NEED BE (mainly cause I dont need this done avery time to test 1 feature sooooo)
+DEVELOPMENT = 0 #0 = RUN AS NORMAL ||| 1 = DISABLES GENERATING NEW IMAGES, CROPPING THEM, AND ANY OTHER FEATURES DOWN THE ROAD AS NEED BE (mainly cause I dont need this done avery time to test 1 feature sooooo)
 
 # Function to extract frames 
 def FrameCapture(path, fileName): 
@@ -13,7 +14,7 @@ def FrameCapture(path, fileName):
 	vidObj = cv2.VideoCapture(path + "\\" + fileName) 
 
 	# Used as counter variable 
-	count = 0
+	count = 0 #this is the Image # counter 
  
 	#Screen videos record around 55-60FPS, unless you want ur video of +30 minutes to take you ~16.5 min JUST to convert frames (tested myself), then you are going to wanna skip frames
 	skip = 0
@@ -33,7 +34,8 @@ def FrameCapture(path, fileName):
 			savedFileName = path + "\\images\\" + "frame" + str(count) + ".jpg"
 			
 			if skip == skipLimit: #every (~55/skip) FPS, a frame is saved (idk how to word it, but its less frames :) )
-				cv2.imwrite(str(savedFileName), image) 
+				if DEVELOPMENT == 0:
+					cv2.imwrite(str(savedFileName), image) 
 				skip = 0
 				count += 1
 				#print(savedFileName)
@@ -103,16 +105,14 @@ if __name__ == '__main__':
 		tempCounter = 0
 		for i in text: 
 			temp = text[tempCounter].split(',') #Apparently sometimes PERIODS can be mistaken as commas... sooo
-			
-			
-
-					
+	
 			#print("TEMP: " + str(temp))
 			for j in temp:
 				holder.append(j)
 			#print()
 			tempCounter +=1
 		print("HOLDER" + str(holder))
+  
 		#SOMETIMES the pgm mistakes "." -> "," Following Code-section corrects that
 		if len(holder) > 6: #should always be 6, unless it mistakens a period as a comma! then there's at min. 7 items in there 0_0
 			#If this happens, this means that ONE of these things CAN be directly converted from str -> int, so if it can, then combine current string cell with the cell to its left, then pop/remove the "full intiger" cell I just checked (i basically identify the fault, and re-append them as they should be) 
@@ -122,11 +122,45 @@ if __name__ == '__main__':
 					#next line of code should run if it works... allowing me to append previous thing with current, fixing the issue (and deleting the mistake from the array)
 					holder[i-1] = holder[i-1] + "." + holder[i]
 					print("ATTEMPT TO FIX ERROR: " + str(holder[i-1]))
-					time.sleep(5)
+     
+     
+     
+					holder.pop(i) #remove the BAD number from array 
+     
+     
+     
+     
+					#time.sleep(1) #FOR DEBUGGING ONLY
 				except:
 					print("Valid Cell, skipping...")
+			#----Check for random "phantom-text" (Sometimes, array will make an empty instance where a string should be, but not fill it with ANY characters... Rare, but often enough to happen 1/250ish frames (from what i've tested thus far)) <-- This edge case SHOULD only happen ALSO if the array is longer than 6 items as well 
+				for j in range(len(holder)):
+					if len(str(holder[j])) <3: #just chose 3 cause I could, if there's less than 3 characters in there, POP the item in the array 
+						holder.pop(j)
 
-		tempCounter = 0 
+			#another edge case - All Letters, No numbers (happened 1/355 times)
+				print("HolderV2: " + str(holder))
+    
+				countForEdgeCase0 = len(holder) #Length of the array (before entering the while loop)
+				tempCounter = 0 #a throw-away counter : used for below while loop
+    
+				while tempCounter != countForEdgeCase0:
+					print("CHECK_FOR_ALL_CHARS: " + str(holder[tempCounter]))
+					if not checkForNumbers(holder[tempCounter]): #from custom program I made in this folder 
+						holder.pop(tempCounter)
+						print("ITEM POPED!")
+						countForEdgeCase0 -=1 #Since I POPED an item, I NOW need to decriment the total length of the array recorded 
+
+					
+					tempCounter += 1 #END OF WHILE LOOP 
+					#if  holder[j].isnumeric() != True: #If ALL items in there are NOT numeric, KILL IT! 
+						#holder.pop(j)
+		
+  
+		#Edge case - No Text on screen to detect 
+		#UPCOMING
+  
+		tempCounter = 0 #RESET BEFORE USE
 		for i in holder: #make it ONLY numbers now 
 			print(i)
 			output = re.findall(r"[-+]?\d*\.\d+|\d+", i)
@@ -143,12 +177,7 @@ if __name__ == '__main__':
 		Bear.append(holder[3])
 		Alt.append(holder[4])
 		Accu.append(holder[5])
-		#for i in text:
-		#	if (i or buffer) in auth :
-		#		if i in auth: #on the next pass, this will help 
-		#			buffer = i
-		#		else: #means that BUFFER is the one that is in auth, meanings its time to check the 2nd char 
-	#Allocating the data to their respective arrays
+
 print("LAT: " + str(Lat))
 
 #					if i == auth2[0]: #a -> La -> Latitude
